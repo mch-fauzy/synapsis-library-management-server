@@ -25,6 +25,14 @@ services:
     depends_on:
       - postgres-db
 
+  books-microservice:
+    build:
+      context: ./microservices/books
+    ports:
+      - "8084:8084"
+    depends_on:
+      - postgres-db
+
   postgres-db:
     image: postgres:14-alpine
     environment:
