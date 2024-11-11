@@ -11,6 +11,7 @@ func V1Routes(r chi.Router, handler handlers.Handler) {
 		// Apply the authentication middleware
 		r.Use(middlewares.AuthenticateToken)
 		r.Get("/authors", handler.GetAuthorsByFilter)
+		r.Get("/authors/{id}", handler.GetAuthorById)
 
 		r.Group(func(r chi.Router) {
 			r.Use(middlewares.AuthorizeAdmin)

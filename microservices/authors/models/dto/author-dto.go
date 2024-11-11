@@ -44,7 +44,11 @@ func (r GetAuthorsByFilterRequest) Validate() error {
 	return nil
 }
 
-type GetAuthorsByFilterResponse struct {
+type GetAuthorByIdRequest struct {
+	Id int `json:"-"`
+}
+
+type AuthorResponse struct {
 	Id        int    `json:"id"`
 	Name      string `json:"name"`
 	CreatedAt string `json:"createdAt"`
@@ -53,10 +57,21 @@ type GetAuthorsByFilterResponse struct {
 	UpdatedBy string `json:"updatedBy"`
 }
 
-func BuildGetAuthorsByFilterResponse(authors []models.Author) []GetAuthorsByFilterResponse {
-	var responses []GetAuthorsByFilterResponse
+func NewAuthorResponse(author models.Author) AuthorResponse {
+	return AuthorResponse{
+		Id:        author.Id,
+		Name:      author.Name,
+		CreatedAt: author.CreatedAt.Format(constant.DateTimeUTCFormat),
+		CreatedBy: author.CreatedBy,
+		UpdatedAt: author.UpdatedAt.Format(constant.DateTimeUTCFormat),
+		UpdatedBy: author.UpdatedBy,
+	}
+}
+
+func BuildAuthorsResponse(authors []models.Author) []AuthorResponse {
+	var responses []AuthorResponse
 	for _, author := range authors {
-		responses = append(responses, GetAuthorsByFilterResponse{
+		responses = append(responses, AuthorResponse{
 			Id:        author.Id,
 			Name:      author.Name,
 			CreatedAt: author.CreatedAt.Format(constant.DateTimeUTCFormat),

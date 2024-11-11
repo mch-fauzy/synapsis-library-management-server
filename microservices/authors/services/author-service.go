@@ -4,7 +4,9 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/synapsis-library-management-server/microservices/authors/models"
 	"github.com/synapsis-library-management-server/microservices/authors/models/dto"
+	"github.com/synapsis-library-management-server/microservices/authors/utils/failure"
 	"github.com/synapsis-library-management-server/microservices/authors/utils/pagination"
+	"gorm.io/gorm"
 )
 
 func (s *Service) CreateAuthor(req dto.CreateAuthorRequest) (string, error) {
@@ -21,7 +23,24 @@ func (s *Service) CreateAuthor(req dto.CreateAuthorRequest) (string, error) {
 	return message, nil
 }
 
-func (s *Service) GetAuthorsByFilter(req dto.GetAuthorsByFilterRequest) ([]dto.GetAuthorsByFilterResponse, dto.PaginationResponse, error) {
+func (s *Service) GetAuthorById(req dto.GetAuthorByIdRequest) (dto.AuthorResponse, error) {
+
+	author, err := s.Repository.GetAuthorById(models.AuthorPrimaryId{Id: req.Id})
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			err = failure.NotFound("Author not found")
+			return dto.AuthorResponse{}, err
+		}
+
+		log.Error().Err(err).Msg("[GetAuthorById] Service error retrieving author by id")
+		return dto.AuthorResponse{}, err
+	}
+
+	response := dto.NewAuthorResponse(author)
+	return response, nil
+}
+
+func (s *Service) GetAuthorsByFilter(req dto.GetAuthorsByFilterRequest) ([]dto.AuthorResponse, dto.PaginationResponse, error) {
 	authors, totalAuthors, err := s.Repository.GetAuthorsByFilter(models.Filter{
 		Pagination: models.Pagination{
 			Page:     int(req.Page),
@@ -30,10 +49,10 @@ func (s *Service) GetAuthorsByFilter(req dto.GetAuthorsByFilterRequest) ([]dto.G
 	})
 	if err != nil {
 		log.Error().Err(err).Msg("[GetAuthorsByFilter] Service error getting authors")
-		return []dto.GetAuthorsByFilterResponse{}, dto.PaginationResponse{}, err
+		return []dto.AuthorResponse{}, dto.PaginationResponse{}, err
 	}
 
-	responses := dto.BuildGetAuthorsByFilterResponse(authors)
+	responses := dto.BuildAuthorsResponse(authors)
 	metadata := pagination.CalculatePaginationMetadata(req.Page, req.PageSize, totalAuthors)
 	return responses, metadata, nil
 }

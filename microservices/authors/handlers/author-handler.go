@@ -6,13 +6,14 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-chi/chi"
 	"github.com/synapsis-library-management-server/microservices/authors/models/dto"
 	"github.com/synapsis-library-management-server/microservices/authors/utils/constant"
 	"github.com/synapsis-library-management-server/microservices/authors/utils/response"
 )
 
 // CreateAuthor
-// @Summary Create Author
+// @Summary Create author
 // @Description This endpoint for create an author
 // @Tags authors
 // @Param request body dto.CreateAuthorRequest true "Required body to create author"
@@ -21,6 +22,7 @@ import (
 // @Failure 400 {object} response.Base
 // @Failure 404 {object} response.Base
 // @Failure 500 {object} response.Base
+// @Security BearerAuth
 // @Router /v1/authors [post]
 func (h *Handler) CreateAuthor(w http.ResponseWriter, r *http.Request) {
 	email := r.Header.Get(constant.EmailHeader)
@@ -53,8 +55,38 @@ func (h *Handler) CreateAuthor(w http.ResponseWriter, r *http.Request) {
 	response.WithMessage(w, http.StatusCreated, msg)
 }
 
+// GetAuthorById
+// @Summary Get author by id
+// @Description This endpoint for get an author id
+// @Tags authors
+// @Param id path string true "id of the author"
+// @Produce json
+// @Success 200 {object} response.Base
+// @Failure 400 {object} response.Base
+// @Failure 404 {object} response.Base
+// @Failure 500 {object} response.Base
+// @Security BearerAuth
+// @Router /v1/authors/{id} [get]
+func (h *Handler) GetAuthorById(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		response.WithError(w, err)
+		return
+	}
+
+	var request dto.GetAuthorByIdRequest
+	request.Id = id
+	result, err := h.Service.GetAuthorById(request)
+	if err != nil {
+		response.WithError(w, err)
+		return
+	}
+
+	response.WithData(w, http.StatusOK, result)
+}
+
 // GetAuthorsByFilter
-// @Summary Get Authors
+// @Summary Get authors
 // @Description This endpoint for get list of author
 // @Tags authors
 // @Param page query string false "Number of page"

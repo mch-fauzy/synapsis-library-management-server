@@ -17,6 +17,18 @@ func (r *Repository) CreateAuthor(createAuthor *models.Author) error {
 	return nil
 }
 
+func (r *Repository) GetAuthorById(primaryId models.AuthorPrimaryId) (models.Author, error) {
+	var author models.Author
+	authorData := r.PostgreSqlConn.Db.First(&author, primaryId)
+	err := authorData.Error
+	if err != nil {
+		log.Error().Err(err).Msg("[GetAuthorById] Repository error retrieving author by id")
+		return models.Author{}, err
+	}
+
+	return author, nil
+}
+
 func (r *Repository) GetAuthorsByFilter(filter models.Filter) ([]models.Author, int64, error) {
 	var authors []models.Author
 	var totalAuthors int64

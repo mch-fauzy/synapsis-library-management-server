@@ -39,3 +39,7 @@ type Author struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	DeletedBy null.String
 }
+
+type AuthorPrimaryId struct {
+	Id int `gorm:"primaryKey"`
+}
