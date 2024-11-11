@@ -1,0 +1,4 @@
+development:
+  dialect: postgres
+  datasource: host=${DOCKER_DB_POSTGRESQL_HOST} dbname=${DOCKER_DB_POSTGRESQL_NAME} user=${DOCKER_DB_POSTGRESQL_USER} password=${DOCKER_DB_POSTGRESQL_PASSWORD} sslmode=disable
+  dir: migrations/postgresql
