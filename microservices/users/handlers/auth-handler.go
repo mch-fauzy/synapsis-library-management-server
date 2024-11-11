@@ -11,7 +11,7 @@ import (
 )
 
 // RegisterUser
-// @Summary Register User
+// @Summary Register user
 // @Description This endpoint for register an user
 // @Tags register
 // @Param request body dto.RegisterRequest true "Required body to register user"
@@ -52,7 +52,7 @@ func (h *Handler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // RegisterAdmin
-// @Summary Register Admin
+// @Summary Register admin
 // @Description This endpoint for register an admin
 // @Tags admin register
 // @Param request body dto.RegisterRequest true "Required body to register admin"
