@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-chi/chi"
 	"github.com/synapsis-library-management-server/microservices/categories/models/dto"
 	"github.com/synapsis-library-management-server/microservices/categories/utils/constant"
 	"github.com/synapsis-library-management-server/microservices/categories/utils/response"
@@ -21,6 +22,7 @@ import (
 // @Failure 400 {object} response.Base
 // @Failure 404 {object} response.Base
 // @Failure 500 {object} response.Base
+// @Security BearerAuth
 // @Router /v1/categories [post]
 func (h *Handler) CreateCategory(w http.ResponseWriter, r *http.Request) {
 	email := r.Header.Get(constant.EmailHeader)
@@ -53,8 +55,38 @@ func (h *Handler) CreateCategory(w http.ResponseWriter, r *http.Request) {
 	response.WithMessage(w, http.StatusCreated, msg)
 }
 
+// GetCategoryById
+// @Summary Get category by id
+// @Description This endpoint for get a category id
+// @Tags categories
+// @Param id path string true "id of the category"
+// @Produce json
+// @Success 200 {object} response.Base
+// @Failure 400 {object} response.Base
+// @Failure 404 {object} response.Base
+// @Failure 500 {object} response.Base
+// @Security BearerAuth
+// @Router /v1/categories/{id} [get]
+func (h *Handler) GetCategoryById(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		response.WithError(w, err)
+		return
+	}
+
+	var request dto.GetCategoryByIdRequest
+	request.Id = id
+	result, err := h.Service.GetCategoryById(request)
+	if err != nil {
+		response.WithError(w, err)
+		return
+	}
+
+	response.WithData(w, http.StatusOK, result)
+}
+
 // GetCategoriesByFilter
-// @Summary Get Categories
+// @Summary Get categories
 // @Description This endpoint for get list of categories
 // @Tags categories
 // @Param page query string false "Number of page"

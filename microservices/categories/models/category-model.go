@@ -39,3 +39,7 @@ type Category struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	DeletedBy null.String
 }
+
+type CategoryPrimaryId struct {
+	Id int `gorm:"primaryKey"`
+}

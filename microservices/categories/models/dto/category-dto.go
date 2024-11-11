@@ -44,7 +44,11 @@ func (r GetCategoriesByFilterRequest) Validate() error {
 	return nil
 }
 
-type GetCategoriesByFilterResponse struct {
+type GetCategoryByIdRequest struct {
+	Id int `json:"-"`
+}
+
+type CategoryResponse struct {
 	Id        int    `json:"id"`
 	Name      string `json:"name"`
 	CreatedAt string `json:"createdAt"`
@@ -53,10 +57,21 @@ type GetCategoriesByFilterResponse struct {
 	UpdatedBy string `json:"updatedBy"`
 }
 
-func BuildGetCategoriesByFilterResponse(categories []models.Category) []GetCategoriesByFilterResponse {
-	var responses []GetCategoriesByFilterResponse
+func NewCategoryResponse(category models.Category) CategoryResponse {
+	return CategoryResponse{
+		Id:        category.Id,
+		Name:      category.Name,
+		CreatedAt: category.CreatedAt.Format(constant.DateTimeUTCFormat),
+		CreatedBy: category.CreatedBy,
+		UpdatedAt: category.UpdatedAt.Format(constant.DateTimeUTCFormat),
+		UpdatedBy: category.UpdatedBy,
+	}
+}
+
+func BuildCategoriesResponse(categories []models.Category) []CategoryResponse {
+	var responses []CategoryResponse
 	for _, category := range categories {
-		responses = append(responses, GetCategoriesByFilterResponse{
+		responses = append(responses, CategoryResponse{
 			Id:        category.Id,
 			Name:      category.Name,
 			CreatedAt: category.CreatedAt.Format(constant.DateTimeUTCFormat),

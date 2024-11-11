@@ -17,6 +17,18 @@ func (r *Repository) CreateCategory(createCategory *models.Category) error {
 	return nil
 }
 
+func (r *Repository) GetCategoryById(primaryId models.CategoryPrimaryId) (models.Category, error) {
+	var category models.Category
+	categoryData := r.PostgreSqlConn.Db.First(&category, primaryId)
+	err := categoryData.Error
+	if err != nil {
+		log.Error().Err(err).Msg("[GetCategoryById] Repository error retrieving category by id")
+		return models.Category{}, err
+	}
+
+	return category, nil
+}
+
 func (r *Repository) GetCategoriesByFilter(filter models.Filter) ([]models.Category, int64, error) {
 	var categories []models.Category
 	var totalCategories int64

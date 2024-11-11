@@ -6,6 +6,7 @@ import (
 	"github.com/synapsis-library-management-server/microservices/categories/models/dto"
 	"github.com/synapsis-library-management-server/microservices/categories/utils/failure"
 	"github.com/synapsis-library-management-server/microservices/categories/utils/pagination"
+	"gorm.io/gorm"
 )
 
 func (s *Service) CreateCategory(req dto.CreateCategoryRequest) (string, error) {
@@ -41,7 +42,24 @@ func (s *Service) CreateCategory(req dto.CreateCategoryRequest) (string, error) 
 	return message, nil
 }
 
-func (s *Service) GetCategoriesByFilter(req dto.GetCategoriesByFilterRequest) ([]dto.GetCategoriesByFilterResponse, dto.PaginationResponse, error) {
+func (s *Service) GetCategoryById(req dto.GetCategoryByIdRequest) (dto.CategoryResponse, error) {
+
+	category, err := s.Repository.GetCategoryById(models.CategoryPrimaryId{Id: req.Id})
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			err = failure.NotFound("Category not found")
+			return dto.CategoryResponse{}, err
+		}
+
+		log.Error().Err(err).Msg("[GetCategoryById] Service error retrieving category by id")
+		return dto.CategoryResponse{}, err
+	}
+
+	response := dto.NewCategoryResponse(category)
+	return response, nil
+}
+
+func (s *Service) GetCategoriesByFilter(req dto.GetCategoriesByFilterRequest) ([]dto.CategoryResponse, dto.PaginationResponse, error) {
 	categories, totalCategories, err := s.Repository.GetCategoriesByFilter(models.Filter{
 		Pagination: models.Pagination{
 			Page:     int(req.Page),
@@ -50,10 +68,10 @@ func (s *Service) GetCategoriesByFilter(req dto.GetCategoriesByFilterRequest) ([
 	})
 	if err != nil {
 		log.Error().Err(err).Msg("[GetCategoriesByFilter] Service error getting categories")
-		return []dto.GetCategoriesByFilterResponse{}, dto.PaginationResponse{}, err
+		return []dto.CategoryResponse{}, dto.PaginationResponse{}, err
 	}
 
-	responses := dto.BuildGetCategoriesByFilterResponse(categories)
+	responses := dto.BuildCategoriesResponse(categories)
 	metadata := pagination.CalculatePaginationMetadata(req.Page, req.PageSize, totalCategories)
 	return responses, metadata, nil
 }
