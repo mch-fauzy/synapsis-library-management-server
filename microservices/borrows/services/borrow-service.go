@@ -4,7 +4,9 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/synapsis-library-management-server/microservices/borrows/models"
 	"github.com/synapsis-library-management-server/microservices/borrows/models/dto"
+	"github.com/synapsis-library-management-server/microservices/borrows/utils/failure"
 	"github.com/synapsis-library-management-server/microservices/borrows/utils/pagination"
+	"gorm.io/gorm"
 )
 
 func (s *Service) CreateBorrow(req dto.CreateBorrowRequest) (string, error) {
@@ -39,4 +41,29 @@ func (s *Service) GetBorrowsByFilter(req dto.GetBorrowsByFilterRequest) ([]dto.B
 	responses := dto.BuildBorrowsResponse(borrows)
 	metadata := pagination.CalculatePaginationMetadata(req.Page, req.PageSize, totalBorrows)
 	return responses, metadata, nil
+}
+
+func (s *Service) MarkBorrowAsReturnedById(req dto.MarkBorrowAsReturnedByIdRequest) (string, error) {
+	message := "Failed"
+
+	borrow, err := s.Repository.GetBorrowById(models.BorrowPrimaryId{Id: req.Id})
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			err = failure.NotFound("Borrow not found")
+			return message, err
+		}
+
+		log.Error().Err(err).Msg("[MarkBorrowAsReturnedById] Service error retrieving borrow by id")
+		return message, err
+	}
+
+	borrowToUpdate := req.ToModel()
+	err = s.Repository.UpdateBorrow(models.BorrowPrimaryId{Id: borrow.Id}, &borrowToUpdate)
+	if err != nil {
+		log.Error().Err(err).Msg("[MarkBorrowAsReturnedById] Service error updating borrow as returned")
+		return message, err
+	}
+
+	message = "Success"
+	return message, nil
 }

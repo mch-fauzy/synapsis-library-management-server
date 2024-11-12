@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-chi/chi"
 	"github.com/synapsis-library-management-server/microservices/borrows/models/dto"
 	"github.com/synapsis-library-management-server/microservices/borrows/utils/constant"
 	"github.com/synapsis-library-management-server/microservices/borrows/utils/response"
@@ -87,4 +88,38 @@ func (h *Handler) GetBorrowsByFilter(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.WithMetadata(w, http.StatusOK, result, metadata)
+}
+
+// MarkBorrowAsReturnedById
+// @Summary Mark borrow as returned by id
+// @Description This endpoint for mark borrow record as returned by id
+// @Tags borrows
+// @Param id path string true "id of the borrow record"
+// @Produce json
+// @Success 201 {object} response.Base
+// @Failure 400 {object} response.Base
+// @Failure 404 {object} response.Base
+// @Failure 500 {object} response.Base
+// @Security BearerAuth
+// @Router /v1/borrows/{id} [patch]
+func (h *Handler) MarkBorrowAsReturnedById(w http.ResponseWriter, r *http.Request) {
+	email := r.Header.Get(constant.EmailHeader)
+
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		response.WithError(w, err)
+		return
+	}
+
+	var request dto.MarkBorrowAsReturnedByIdRequest
+	request.Id = id
+	request.Email = email
+
+	msg, err := h.Service.MarkBorrowAsReturnedById(request)
+	if err != nil {
+		response.WithError(w, err)
+		return
+	}
+
+	response.WithMessage(w, http.StatusOK, msg)
 }

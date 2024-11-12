@@ -17,6 +17,30 @@ func (r *Repository) CreateBorrow(createBorrow *models.Borrow) error {
 	return nil
 }
 
+func (r *Repository) GetBorrowById(primaryId models.BorrowPrimaryId) (models.Borrow, error) {
+	var borrow models.Borrow
+	borrowData := r.PostgreSqlConn.Db.First(&borrow, primaryId)
+	err := borrowData.Error
+	if err != nil {
+		log.Error().Err(err).Msg("[GetBorrowById] Repository error retrieving borrow by id")
+		return models.Borrow{}, err
+	}
+
+	return borrow, nil
+}
+
+func (r *Repository) UpdateBorrow(primaryId models.BorrowPrimaryId, updateData *models.Borrow) error {
+	var borrow models.Borrow
+	updatedBorrow := r.PostgreSqlConn.Db.Model(&borrow).Where("id = ?", primaryId.Id).Updates(updateData)
+	err := updatedBorrow.Error
+	if err != nil {
+		log.Error().Err(err).Msg("[UpdateBorrowById] Repository error updating borrow by id")
+		return err
+	}
+
+	return nil
+}
+
 func (r *Repository) GetBorrowsByFilter(filter models.Filter) ([]models.Borrow, int64, error) {
 	var borrows []models.Borrow
 	var totalBorrows int64

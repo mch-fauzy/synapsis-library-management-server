@@ -90,3 +90,15 @@ func BuildBorrowsResponse(borrows []models.Borrow) []BorrowResponse {
 	}
 	return responses
 }
+
+type MarkBorrowAsReturnedByIdRequest struct {
+	Id    int    `json:"-"`
+	Email string `json:"-"`
+}
+
+func (r MarkBorrowAsReturnedByIdRequest) ToModel() models.Borrow {
+	return models.Borrow{
+		ReturnDate: null.TimeFrom(time.Now()),
+		UpdatedBy:  r.Email,
+	}
+}
