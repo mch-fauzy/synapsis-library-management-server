@@ -33,6 +33,14 @@ services:
     depends_on:
       - postgres-db
 
+  borrows-microservice:
+    build:
+      context: ./microservices/borrows
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres-db
+
   postgres-db:
     image: postgres:14-alpine
     environment:
