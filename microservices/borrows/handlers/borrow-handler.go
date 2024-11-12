@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi"
+	"github.com/guregu/null"
 	"github.com/synapsis-library-management-server/microservices/borrows/models/dto"
 	"github.com/synapsis-library-management-server/microservices/borrows/utils/constant"
 	"github.com/synapsis-library-management-server/microservices/borrows/utils/response"
@@ -61,6 +62,7 @@ func (h *Handler) CreateBorrow(w http.ResponseWriter, r *http.Request) {
 // @Tags borrows
 // @Param page query string false "Number of page"
 // @Param pageSize query string false "Total data per Page"
+// @Param userId query string false "id of the borrowers"
 // @Produce json
 // @Success 200 {object} response.Base
 // @Failure 400 {object} response.Base
@@ -71,10 +73,12 @@ func (h *Handler) CreateBorrow(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) GetBorrowsByFilter(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	pageSize, _ := strconv.Atoi(r.URL.Query().Get("pageSize"))
+	userId := r.URL.Query().Get("userId")
 
 	var request dto.GetBorrowsByFilterRequest
 	request.Page = int64(page)
 	request.PageSize = int64(pageSize)
+	request.UserId = null.StringFrom(userId)
 	err := request.Validate()
 	if err != nil {
 		response.WithError(w, err)

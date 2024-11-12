@@ -39,8 +39,9 @@ func (r CreateBorrowRequest) ToModel() models.Borrow {
 }
 
 type GetBorrowsByFilterRequest struct {
-	Page     int64 `json:"page"`
-	PageSize int64 `json:"pageSize"`
+	UserId   null.String `json:"userId"`
+	Page     int64       `json:"page"`
+	PageSize int64       `json:"pageSize"`
 }
 
 func (r GetBorrowsByFilterRequest) Validate() error {

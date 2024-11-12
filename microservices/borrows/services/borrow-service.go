@@ -27,7 +27,19 @@ func (s *Service) CreateBorrow(req dto.CreateBorrowRequest) (string, error) {
 }
 
 func (s *Service) GetBorrowsByFilter(req dto.GetBorrowsByFilterRequest) ([]dto.BorrowResponse, dto.PaginationResponse, error) {
+
+	filterFields := []models.FilterField{}
+
+	if req.UserId.Valid && req.UserId.String != "" {
+		filterFields = append(filterFields, models.FilterField{
+			Field:    models.BorrowDbField.UserId,
+			Operator: models.OperatorEqual,
+			Value:    req.UserId.String,
+		})
+	}
+
 	borrows, totalBorrows, err := s.Repository.GetBorrowsByFilter(models.Filter{
+		FilterFields: filterFields,
 		Pagination: models.Pagination{
 			Page:     int(req.Page),
 			PageSize: int(req.PageSize),
