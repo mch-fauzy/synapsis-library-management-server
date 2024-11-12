@@ -7,6 +7,7 @@ Scalable and modular backend system built with Go (Golang), designed to manage a
 - [Technologies Used](#technologies-used)
 - [Setup](#setup)
 - [API Collections](#API-collections)
+- [ERD](#ERD)
 
 ## Technologies Used
 - Go version 1.22.x
@@ -48,3 +49,7 @@ To simplify testing of the API endpoints, a Postman collections is provided. Fol
 5. Once imported, you will see a new collection named "synapsis-library-management-server" in your Postman collections
 
 6. You can now use this collection to test the API endpoints by sending requests to your running API server
+
+## ERD
+
+![Entity-Relationship Diagram](docs/erd/synapsis-library-management-server-erd.png)
