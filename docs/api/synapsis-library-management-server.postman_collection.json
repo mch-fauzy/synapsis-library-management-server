@@ -1,0 +1,561 @@
+{
+	"info": {
+		"_postman_id": "4d4db6ff-925e-4552-84e9-045bafa6de12",
+		"name": "synapsis-library-management-server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28805337"
+	},
+	"item": [
+		{
+			"name": "users-microservice",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"user@gmail.com\",\r\n    \"password\": \"userpassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/v1/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"adminpassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/v1/admin/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"admin",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"email\": \"user@gmail.com\",\r\n    // \"password\": \"userpassword\"\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"adminpassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/v1/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authors-microservice",
+			"item": [
+				{
+					"name": "Create Author",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM1MzI5Mywicm9sZSI6ImFkbWluIiwidXNlcklkIjoiMDNiMmNjMWItOTFmMy00NDcyLThlZTEtYTgwNzgxNTBkOTRkIn0.X_WgbXpQ8-NG4QM1hStqDADeRAFV7DgnceMmbmfDXwk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"John Doe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/authors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List of Authors",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM1MzI5Mywicm9sZSI6ImFkbWluIiwidXNlcklkIjoiMDNiMmNjMWItOTFmMy00NDcyLThlZTEtYTgwNzgxNTBkOTRkIn0.X_WgbXpQ8-NG4QM1hStqDADeRAFV7DgnceMmbmfDXwk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/authors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"authors"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Number of page",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "5",
+									"description": "Total data per Page",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Author by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM1NTIzMSwicm9sZSI6ImFkbWluIiwidXNlcklkIjoiMDNiMmNjMWItOTFmMy00NDcyLThlZTEtYTgwNzgxNTBkOTRkIn0.pxD5K_E5jXfkTi0PrIruUhDsiemh-nm721OubIjOrr4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/authors/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"authors",
+								"2"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Number of page",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "5",
+									"description": "Total data per Page",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "categories-microservice",
+			"item": [
+				{
+					"name": "Create Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM1NTIzMSwicm9sZSI6ImFkbWluIiwidXNlcklkIjoiMDNiMmNjMWItOTFmMy00NDcyLThlZTEtYTgwNzgxNTBkOTRkIn0.pxD5K_E5jXfkTi0PrIruUhDsiemh-nm721OubIjOrr4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Fiction\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/v1/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"v1",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List of Categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM1NTIzMSwicm9sZSI6ImFkbWluIiwidXNlcklkIjoiMDNiMmNjMWItOTFmMy00NDcyLThlZTEtYTgwNzgxNTBkOTRkIn0.pxD5K_E5jXfkTi0PrIruUhDsiemh-nm721OubIjOrr4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/v1/categories?page=1&pageSize=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"v1",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Number of page"
+								},
+								{
+									"key": "pageSize",
+									"value": "5",
+									"description": "Total data per Page"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM1NTIzMSwicm9sZSI6ImFkbWluIiwidXNlcklkIjoiMDNiMmNjMWItOTFmMy00NDcyLThlZTEtYTgwNzgxNTBkOTRkIn0.pxD5K_E5jXfkTi0PrIruUhDsiemh-nm721OubIjOrr4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/v1/categories/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"v1",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "books-microservice",
+			"item": [
+				{
+					"name": "Create Book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM1NTY4NSwicm9sZSI6ImFkbWluIiwidXNlcklkIjoiMDNiMmNjMWItOTFmMy00NDcyLThlZTEtYTgwNzgxNTBkOTRkIn0.FwO8syssVEC2Bc4OoFANvcA9QDmB3oks8r1NXZtLGIY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Some Book\",\r\n    \"stock\": 1,\r\n    \"publishedYear\": 2010,\r\n    \"isbn\": \"978-3-16-148410-0\",\r\n    \"authorId\": 1,\r\n    \"categoryId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8084/v1/books",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"v1",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List of Books",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM1NTY4NSwicm9sZSI6ImFkbWluIiwidXNlcklkIjoiMDNiMmNjMWItOTFmMy00NDcyLThlZTEtYTgwNzgxNTBkOTRkIn0.FwO8syssVEC2Bc4OoFANvcA9QDmB3oks8r1NXZtLGIY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/v1/books?page=1&pageSize=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"v1",
+								"books"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Number of page"
+								},
+								{
+									"key": "pageSize",
+									"value": "5",
+									"description": "Total data per Page"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "borrows-microservice",
+			"item": [
+				{
+					"name": "Create Borrow Record",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM4Mzg0Mywicm9sZSI6ImFkbWluIiwidXNlcklkIjoiZmRkYWQxZmYtYmMyYS00NzE5LWJmODUtOGEzYzU5ZDIxZjI2In0.HPKZtg1UJ1FbPdH2_so26Ipa2iEWRS3h0y_YxP_dAoM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"df4437fe-ddb3-45d6-b52b-9528421025b8\",\r\n    \"bookId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/v1/borrows",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"v1",
+								"borrows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get List of Borrowers by Filter",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM4Mzg0Mywicm9sZSI6ImFkbWluIiwidXNlcklkIjoiZmRkYWQxZmYtYmMyYS00NzE5LWJmODUtOGEzYzU5ZDIxZjI2In0.HPKZtg1UJ1FbPdH2_so26Ipa2iEWRS3h0y_YxP_dAoM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/v1/borrows?page=1&pageSize=5&userId=df4437fe-ddb3-45d6-b52b-9528421025b8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"v1",
+								"borrows"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Number of page"
+								},
+								{
+									"key": "pageSize",
+									"value": "5",
+									"description": "Total data per Page"
+								},
+								{
+									"key": "userId",
+									"value": "df4437fe-ddb3-45d6-b52b-9528421025b8",
+									"description": "Id of the borrowers (Optional)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Borrow as Returned by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImV4cCI6MTczMTM4Mzg0Mywicm9sZSI6ImFkbWluIiwidXNlcklkIjoiZmRkYWQxZmYtYmMyYS00NzE5LWJmODUtOGEzYzU5ZDIxZjI2In0.HPKZtg1UJ1FbPdH2_so26Ipa2iEWRS3h0y_YxP_dAoM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/v1/borrows/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"v1",
+								"borrows",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
