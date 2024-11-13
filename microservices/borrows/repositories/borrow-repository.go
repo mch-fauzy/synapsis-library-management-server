@@ -3,6 +3,7 @@ package repositories
 import (
 	"github.com/rs/zerolog/log"
 	"github.com/synapsis-library-management-server/microservices/borrows/models"
+	"github.com/synapsis-library-management-server/microservices/borrows/utils/failure"
 	"gorm.io/gorm"
 )
 
@@ -19,9 +20,14 @@ func (r *Repository) CreateBorrow(createBorrow *models.Borrow) error {
 
 func (r *Repository) GetBorrowById(primaryId models.BorrowPrimaryId) (models.Borrow, error) {
 	var borrow models.Borrow
-	borrowData := r.PostgreSqlConn.Db.First(&borrow, primaryId)
+	borrowData := r.PostgreSqlConn.Db.First(&borrow, primaryId.Id)
 	err := borrowData.Error
 	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			err = failure.NotFound("Borrow not found")
+			return models.Borrow{}, err
+		}
+
 		log.Error().Err(err).Msg("[GetBorrowById] Repository error retrieving borrow by id")
 		return models.Borrow{}, err
 	}
@@ -29,7 +35,7 @@ func (r *Repository) GetBorrowById(primaryId models.BorrowPrimaryId) (models.Bor
 	return borrow, nil
 }
 
-func (r *Repository) UpdateBorrow(primaryId models.BorrowPrimaryId, updateData *models.Borrow) error {
+func (r *Repository) UpdateBorrowById(primaryId models.BorrowPrimaryId, updateData *models.Borrow) error {
 	var borrow models.Borrow
 	updatedBorrow := r.PostgreSqlConn.Db.Model(&borrow).Where("id = ?", primaryId.Id).Updates(updateData)
 	err := updatedBorrow.Error
